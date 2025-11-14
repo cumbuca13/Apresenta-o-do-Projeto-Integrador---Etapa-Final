@@ -90,6 +90,14 @@ O projeto segue a estrutura padrão do Laravel:
 -app/Providers/PatternServiceProvider.php — registra bindings básicos no container (ex.: bind da SchedulingStrategyInterface para NoOverlapSchedulingStrategy, e singletons dos -handlers caso desejado).
 
 ---
+## 👥 Autores
+
+* **Matheus Grochovski**
+* **Luan Ribeiro**
+
+📍 Projeto desenvolvido para fins de aprendizado e prática dos conceitos de **Desenvolvimento Back-end**.
+
+---
 
 ## 🚀 Como Executar
 
@@ -177,3 +185,4 @@ MySQL
 Laravel Breeze + Sanctum
 
 PHPUnit
+

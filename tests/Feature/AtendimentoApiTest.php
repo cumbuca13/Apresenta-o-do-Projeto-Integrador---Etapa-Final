@@ -28,7 +28,7 @@ class AtendimentoApiTest extends TestCase
         $payload = [
             'paciente_id' => $paciente->id,
             'dentista_id' => $dentista->id,
-            'data_atendimento' => now()->toDateTimeString(),
+            'data' => now()->toDateTimeString(),
             'descricao' => 'Consulta de rotina',
             'status' => 'Agendado'
         ];
