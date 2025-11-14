@@ -1,6 +1,6 @@
 # Sistema de Atendimento - Clínica Odontológica
 
-## 📌 Entrega Parcial 1: Padrões de Projeto e CQRS 
+## 📌 Apresentação do Projeto Integrador - Etapa Final 
 
 ## 📌 Link do Vídeo de apresentação: https://youtu.be/MfnLnJlE7F0
 
@@ -36,25 +36,58 @@ O projeto segue a estrutura padrão do Laravel:
 - **Testes Automatizados:** `tests/Feature` e `tests/Unit`
 - **Rotas API:** `routes/api.php`
 
-## Padrões de Projeto (adicionado)
+## Padrões de Projeto (adicionados)
 
 
-Este repositório recebeu pequenas refatorações para demonstrar a aplicação de padrões de projeto e princípios SOLID:
+1) **Contracts (interfaces)**
 
+-app/Contracts/Strategies/SchedulingStrategyInterface.php — interface da Strategy (método canSchedule(array $data): bool).
 
-- **Factory Method**: `App\Services\AtendimentoFactory` — centraliza a criação de objetos `Atendimento` (facilita criação de tipos diferentes e segue OCP).
+-app/Contracts/Factories/AtendimentoFactoryInterface.php — interface da Factory (método make(array $data): Atendimento).
 
+-(Estas duas foram criadas para desacoplar Strategy e Factory das implementações.)
 
-- **Strategy**: `App\Strategies\SchedulingStrategyInterface` com implementações `NoOverlapSchedulingStrategy` e `SimpleSchedulingStrategy` — permite trocar a regra de agendamento sem alterar a lógica de criação (DIP, OCP).
+2) **Factory Method (padrão Gamma)**
 
+-app/Factories/AtendimentoCreator.php — classe abstrata base (declara createFactory() / novoAtendimento() conforme a versão aplicada).
 
-- **CQRS (inicial)**: comandos (`App\Commands\CreateAtendimentoCommand`) e queries (`App\Queries\GetAtendimentosQuery`) com handlers — separação entre escrita e leitura, facilitando testes e evoluções futuras.
+-app/Factories/AtendimentoPresencialCreator.php — Creator concreto para atendimentos presenciais.
 
+-app/Factories/AtendimentoOnlineCreator.php — Creator concreto para atendimentos online.
 
-- **Injeção de Dependência**: registramos `App\Providers\PatternServiceProvider` que faz o binding das estratégias e handlers, reduzindo acoplamento e favorecendo testes.
+-app/Factories/AtendimentoPresencialFactory.php — Factory concreta que implementa AtendimentoFactoryInterface (método make).
 
+-app/Factories/AtendimentoOnlineFactory.php — Factory concreta que implementa AtendimentoFactoryInterface.
 
-As mudanças foram feitas com foco em clareza pedagógica e baixo impacto na arquitetura atual do projeto.
+-(Esses arquivos implementam o Factory Method no estilo Creator → ConcreteCreator → ConcreteFactory, e garantem createFactory()/make() disponíveis.)
+
+3) **Strategy com Context**
+
+-app/Contexts/SchedulingContext.php — Context do padrão Strategy (usa a interface SchedulingStrategyInterface e expõe canSchedule()).
+
+-app/Strategies/SimpleSchedulingStrategy.php — implementação simples da Strategy.
+
+-app/Strategies/NoOverlapSchedulingStrategy.php — implementação que checa conflitos de horário.
+
+4) **Handlers / CQRS (inicial)**
+
+-app/Commands/CreateAtendimentoCommand.php — Command (dados para criar atendimento).
+
+-app/Handlers/CreateAtendimentoHandler.php — Handler do comando, atualizado para:
+
+-usar o SchedulingContext para checagem de strategy,
+
+-escolher o Creator (online/presencial),
+
+-chamar createFactory() → make() para obter o model,
+
+-save() do model.
+
+-app/Queries/GetAtendimentosQuery.php e app/Handlers/GetAtendimentosHandler.php — query/handler para leitura (se você aplicou essa parte).
+
+5) **Provider (binding de DI)**
+
+-app/Providers/PatternServiceProvider.php — registra bindings básicos no container (ex.: bind da SchedulingStrategyInterface para NoOverlapSchedulingStrategy, e singletons dos -handlers caso desejado).
 
 ---
 
