@@ -2,7 +2,7 @@
 
 ## 📌 Apresentação do Projeto Integrador - Etapa Final 
 
-## 📌 Link do Vídeo de apresentação: https://youtu.be/MfnLnJlE7F0
+## 📌 Link do Vídeo de apresentação: https://youtu.be/CPUBliccooc
 
 Este projeto é um sistema de gestão de clínica odontológica desenvolvido em **Laravel 10**, utilizando **Eloquent ORM**, autenticação com **Laravel Breeze/Sanctum** e testes automatizados.
 
