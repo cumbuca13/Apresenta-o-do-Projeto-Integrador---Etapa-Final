@@ -94,6 +94,7 @@ O projeto segue a estrutura padrão do Laravel:
 
 * **Matheus Grochovski**
 * **Luan Ribeiro**
+* **Felipe Ismael**
 
 📍 Projeto desenvolvido para fins de aprendizado e prática dos conceitos de **Desenvolvimento Back-end**.
 
